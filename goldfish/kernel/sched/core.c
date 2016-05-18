@@ -1749,15 +1749,15 @@ void sched_fork(struct task_struct *p)
 	 * Make sure we do not leak PI boosting priority to the child.
 	 */
 
-	//p->prio = current->normal_prio;
-	if(p->policy == SCHED_NORMAL && strcmp("main",p->comm) == 0)
-	{
-		p->prio = (99/5) * (p->pid % 5) + 1;
-		p->normal_prio = p->prio;
-		p->rt_priority = p->prio;
-		p->policy = SCHED_RR;
-		p->static_prio = NICE_TO_PRIO(0);
-	}
+	p->prio = current->normal_prio;
+	// if(p->policy == SCHED_NORMAL && strcmp("main",p->comm) == 0)
+	// {
+	// 	p->prio = (99/5) * (p->pid % 5) + 1;
+	// 	p->normal_prio = p->prio;
+	// 	p->rt_priority = p->prio;
+	// 	p->policy = SCHED_RR;
+	// 	p->static_prio = NICE_TO_PRIO(0);
+	// }
 
 	/*
 	 * Revert to default priority/policy on fork if requested.
