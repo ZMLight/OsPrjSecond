@@ -5,6 +5,7 @@
 
 #include "sched.h"
 
+#include <linux/random.h>
 #include <linux/slab.h>
 
 static int do_sched_rt_period_timer(struct rt_bandwidth *rt_b, int overrun);
@@ -1332,8 +1333,18 @@ static struct sched_rt_entity *pick_next_rt_entity(struct rq *rq,
 	struct sched_rt_entity *next = NULL;
 	struct list_head *queue;
 	int idx;
+	unsigned int tmp;
 
-	idx = sched_find_first_bit(array->bitmap);
+	do {
+		get_random_bytes(&tmp,sizeof(tmp));
+		tmp = tmp % 100;
+		idx = tmp;
+		BUG_ON(idx >= MAX_RT_PRIO);
+
+		queue = array->queue + idx;
+	} while(list_empty(queue->next));
+	idx = tmp;
+	//idx = sched_find_first_bit(array->bitmap);
 	BUG_ON(idx >= MAX_RT_PRIO);
 
 	queue = array->queue + idx;

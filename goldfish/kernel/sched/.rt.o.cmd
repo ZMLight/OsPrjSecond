@@ -465,6 +465,12 @@ deps_kernel/sched/rt.o := \
   include/linux/jump_label.h \
     $(wildcard include/config/jump/label.h) \
   kernel/sched/features.h \
+  include/linux/random.h \
+    $(wildcard include/config/arch/random.h) \
+  include/linux/ioctl.h \
+  arch/arm/include/generated/asm/ioctl.h \
+  include/asm-generic/ioctl.h \
+  include/linux/irqnr.h \
   include/linux/slab.h \
     $(wildcard include/config/slab/debug.h) \
     $(wildcard include/config/failslab.h) \
