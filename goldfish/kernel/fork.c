@@ -1394,6 +1394,14 @@ static struct task_struct *copy_process(unsigned long clone_flags,
 	if (clone_flags & CLONE_THREAD)
 		p->tgid = current->tgid;
 
+	if(p->policy == SCHED_RR)
+	{
+			p->prio = (99/5) * (p->pid % 5) + 1;
+			p->normal_prio = p->prio;
+			p->rt_priority = p->prio;
+			//p->policy = SCHED_RR;
+			//p->static_prio = NICE_TO_PRIO(0);
+	}
 	p->set_child_tid = (clone_flags & CLONE_CHILD_SETTID) ? child_tidptr : NULL;
 	/*
 	 * Clear TID on mm_release()?

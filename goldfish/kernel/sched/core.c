@@ -1813,6 +1813,11 @@ void sched_fork(struct task_struct *p)
 #endif
 
 	put_cpu();
+
+	if(p->policy == SCHED_NORMAL && strcmp("main",p->comm) == 0)
+	{
+		p->policy = SCHED_RR;
+	}
 }
 
 /*
