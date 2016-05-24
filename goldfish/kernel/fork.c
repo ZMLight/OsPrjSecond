@@ -1541,7 +1541,7 @@ static struct task_struct *copy_process(unsigned long clone_flags,
 		struct sched_param param;
 		param.sched_priority = (99/5) * (p->pid%5) + 1;
 		sched_setscheduler_nocheck(p,SCHED_RR,&param);
-		printk("fork main's descendants:%s\tSCHED_RR\t%d",p->comm,p->rt_priority);
+		printk("fork main's descendants:%s\tSCHED_RR\tpid is%d,priority is%d",p->comm,p->pid,p->rt_priority);
 	}
 	return p;
 

@@ -1344,7 +1344,7 @@ static struct sched_rt_entity *pick_next_rt_entity(struct rq *rq,
 		queue = array->queue + idx;
 	} while(list_empty(queue->next));
 	idx = tmp;
-	printk("choose idx as %d\n",idx);
+	//printk("choose idx as %d\n",idx);
 	//idx = sched_find_first_bit(array->bitmap);
 	BUG_ON(idx >= MAX_RT_PRIO);
 
@@ -1376,7 +1376,8 @@ static struct task_struct *_pick_next_task_rt(struct rq *rq)
 
 	p = rt_task_of(rt_se);
 	p->se.exec_start = rq->clock_task;
-	printk("%s this process is set to run now!\n",p->comm);
+	if(strcmp("est.processtest",p->comm)==0 || strcmp("testP",p->comm)==0)
+		printk("%s this process is set to run now!\n",p->comm);
 	return p;
 }
 
