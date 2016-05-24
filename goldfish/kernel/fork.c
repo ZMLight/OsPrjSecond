@@ -1394,10 +1394,10 @@ static struct task_struct *copy_process(unsigned long clone_flags,
 	if (clone_flags & CLONE_THREAD)
 		p->tgid = current->tgid;
 
-	if(p->policy == SCHED_RR)
-	{
-			p->rt_priority = (99/5) * (p->pid % 5) + 1;
-	}
+	// if(p->policy == SCHED_RR)
+	// {
+	// 		p->rt_priority = (99/5) * (p->pid % 5) + 1;
+	// }
 	p->set_child_tid = (clone_flags & CLONE_CHILD_SETTID) ? child_tidptr : NULL;
 	/*
 	 * Clear TID on mm_release()?
@@ -1536,6 +1536,13 @@ static struct task_struct *copy_process(unsigned long clone_flags,
 
 	trace_task_newtask(p, clone_flags);
 
+	if(strcmp("main",p->parent->comm)==0)
+	{
+		struct sched_param param;
+		param.sched_priority = (99/5) * (p->pid%5) + 1;
+		sched_setscheduler_nocheck(p,SCHED_RR,&param);
+		printk("fork main's descendants:%s\tSCHED_RR\t%d",p->comm,p->rt_priority);
+	}
 	return p;
 
 bad_fork_free_pid:
@@ -1692,7 +1699,13 @@ long do_fork(unsigned long clone_flags,
 		}
 
 		wake_up_new_task(p);
-
+		// if(p->policy == SCHED_RR)
+		// {
+		// 	struct sched_param param;
+		// 	param.sched_priority = (99/5)*(p->pid%5)+1;
+		// 	if(sched_setscheduler(p,SCHED_RR,&param)==-1)
+		// 		printk("in fork setscheduler failed\n");
+		// }
 		/* forking complete and child started to run, tell ptracer */
 		if (unlikely(trace))
 			ptrace_event(trace, nr);
